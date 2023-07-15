@@ -54,14 +54,12 @@ const App = () => {
   const [visible, setvisible] = useState(1);
   const [back, setback] = useState(false);
   const nextPlease = () => {
-    setvisible((prev) => (prev === 3 ? 3 : prev + 1));
     setback(false);
-    console.log(visible);
+    setvisible((prev) => (prev === 3 ? 3 : prev + 1));
   };
   const prevPlease = () => {
+    setback(true);
     setvisible((prev) => (prev === 1 ? 1 : prev - 1));
-    setback((cur) => !cur);
-    console.log(visible);
   };
   return (
     <Wrap>
