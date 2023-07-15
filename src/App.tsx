@@ -10,7 +10,6 @@ const Wrap = styled(motion.div)`
   align-items: center;
   flex-flow: column;
   background-color: #181818;
-  position: relative;
 `;
 const Box = styled(motion.div)`
   position: absolute;
@@ -26,50 +25,61 @@ const Box = styled(motion.div)`
 `;
 
 const boxVars = {
-  invisible: {
-    x: 500,
+  entry: (back: boolean) => ({
+    x: back ? -500 : 500,
     opacity: 0,
     scale: 0,
-  },
-  visible: {
+  }),
+
+  center: {
     x: 0,
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 1,
+      duration: 0.3,
     },
   },
-  exit: {
-    x: -500,
+
+  exit: (back: boolean) => ({
+    x: back ? 500 : -500,
     opacity: 0,
     scale: 0,
     transition: {
-      duration: 1,
+      duration: 0.3,
     },
-  },
+  }),
 };
 
 const App = () => {
   const [visible, setvisible] = useState(1);
-  const nextPlease = () => setvisible((prev) => (prev === 10 ? 1 : prev + 1));
+  const [back, setback] = useState(false);
+  const nextPlease = () => {
+    setvisible((prev) => (prev === 3 ? 3 : prev + 1));
+    setback(false);
+    console.log(visible);
+  };
+  const prevPlease = () => {
+    setvisible((prev) => (prev === 1 ? 1 : prev - 1));
+    setback((cur) => !cur);
+    console.log(visible);
+  };
   return (
     <Wrap>
-      <AnimatePresence>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) =>
-          i === visible ? (
-            <Box
-              variants={boxVars}
-              initial="invisible"
-              animate="visible"
-              exit="exit"
-              key={i}
-            >
-              {i}
-            </Box>
-          ) : null
-        )}
+      <AnimatePresence custom={back}>
+        <Box
+          custom={back}
+          variants={boxVars}
+          initial="entry"
+          animate="center"
+          exit="exit"
+          // 컴포넌트가 삭제될 떄 발동
+          key={visible}
+        >
+          {visible}
+        </Box>
       </AnimatePresence>
-      <button onClick={nextPlease}>클릭</button>
+      <button onClick={nextPlease}>다음</button>
+      <button onClick={prevPlease}>이전</button>
     </Wrap>
   );
 };
