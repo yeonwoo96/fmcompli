@@ -49,7 +49,7 @@ const boxVars = {
   },
 };
 
-const App = () => {
+const Slider = () => {
   const [visible, setvisible] = useState(1);
   const nextPlease = () => setvisible((prev) => (prev === 10 ? 1 : prev + 1));
   return (
@@ -74,4 +74,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Slider;
